@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -8,9 +8,26 @@ import { motion } from "framer-motion";
 import "react-vertical-timeline-component/style.min.css";
 
 import { styles } from "../styles";
-import { experiences } from "../constants";
+import { experiences as fallbackExperiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
+import { meta, shopify, starbucks, tesla } from "../assets";
+
+const defaultIcons = [starbucks, tesla, shopify, meta];
+const defaultColors = ["#383E56", "#E6DEDD", "#383E56", "#E6DEDD"];
+
+const normalizeExperience = (experience, index) => ({
+  ...experience,
+  title: experience.title || 'Portfolio role',
+  company_name: experience.company_name || 'Company',
+  date: experience.date || 'Present',
+  location: experience.location || '',
+  points: Array.isArray(experience.points) && experience.points.length
+    ? experience.points
+    : [experience.description || 'Worked on meaningful portfolio work.'],
+  icon: experience.icon || defaultIcons[index % defaultIcons.length],
+  iconBg: experience.iconBg || defaultColors[index % defaultColors.length],
+});
 
 const ExperienceCard = ({ experience }) => {
   return (
@@ -57,6 +74,27 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
+  const [experiences, setExperiences] = useState(fallbackExperiences);
+
+  useEffect(() => {
+    const loadExperiences = async () => {
+      try {
+        const response = await fetch('/api/jobs');
+        const data = await response.json();
+
+        if (Array.isArray(data.jobs) && data.jobs.length > 0) {
+          setExperiences(data.jobs.map(normalizeExperience));
+        }
+      } catch (error) {
+        console.error('Failed to load portfolio jobs:', error);
+      }
+    };
+
+    loadExperiences();
+  }, []);
+
+  const visibleExperiences = experiences.map((experience, index) => normalizeExperience(experience, index));
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -70,7 +108,7 @@ const Experience = () => {
 
       <div className='mt-20 flex flex-col'>
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
+          {visibleExperiences.map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
               experience={experience}

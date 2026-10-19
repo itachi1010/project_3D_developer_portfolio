@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "5173:5173"
+      - "5001:5001"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      DATABASE_URL: postgresql://user:password@db:5432/mydatabase
+      PORT: 5001
+    command: npm run dev
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+

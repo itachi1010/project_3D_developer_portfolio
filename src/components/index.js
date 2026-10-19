@@ -8,6 +8,7 @@ import Works from "./Works";
 import Feedbacks from "./Feedbacks";
 import Contact from "./Contact";
 import CanvasLoader from "./Loader";
+import AdminPanel from "./AdminPanel";
 
 
 export {
@@ -20,8 +21,9 @@ export {
   Feedbacks,
   Contact,
   CanvasLoader,
-  EarthCanvas, 
-  BallCanvas, 
-  ComputersCanvas, 
+  AdminPanel,
+  EarthCanvas,
+  BallCanvas,
+  ComputersCanvas,
   StarsCanvas
 };
