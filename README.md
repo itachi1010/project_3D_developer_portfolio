@@ -2,6 +2,9 @@
 
 Live: https://www.bennyuchiha.tech
 
+For the full history, SSH access and next-agent runbook, read
+[portfolio handoff](docs/PORTFOLIO_HANDOFF.md) and [agent instructions](AGENTS.md).
+
 Production updates use **commit → push main → GitHub Actions → VPS auto-deploy**.
 See [GitHub deployment guide](docs/GITHUB_DEPLOYMENT.md) for VS Code steps,
 deployment status, rollback behavior and service commands.

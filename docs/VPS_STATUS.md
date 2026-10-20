@@ -1,4 +1,4 @@
-# Portfolio VPS status — 19 October 2026
+# Portfolio VPS status — 20 October 2026
 
 The personalized portfolio is deployed on `45.9.191.177`, in the existing K3s
 `demos` namespace. Production now uses **GitHub-based automatic deployments**, validated on 20 October 2026. The first verified Git deployment was `de85ec9cdf3b97bad274919b83c41460e9653e8c`. The current deployed commit is available at https://www.bennyuchiha.tech/release.json. Earlier manual frontend/API releases remain archived.
@@ -44,9 +44,9 @@ The registry now delegates to `ram.ns.cloudflare.com` and
 `sasha.ns.cloudflare.com`. Google and Cloudflare public resolvers confirmed the
 VPS origin before the user enabled the proxy; they now return Cloudflare edge
 addresses. Both the apex and `www` are routed in the portfolio Ingress resources.
-Some local/network DNS caches still return Hostinger's old `2.57.91.91` address,
-even after clearing the Windows client cache. That is separate from the active
-Cloudflare configuration.
+On 19 October some local/network DNS caches returned Hostinger's old
+`2.57.91.91` address even after clearing the client cache. This is historical
+evidence; recheck DNS before treating it as a current issue.
 
 The following command obtained a Let's Encrypt certificate covering both names:
 
@@ -77,7 +77,7 @@ and the supplied portrait in a responsive, subtly animated opening section.
 The animation respects reduced-motion preferences. The public resume was updated.
 Public HTTPS browser checks passed at desktop, tablet and phone widths, including
 the retained 3D phone controls and project filters. API/database pods and Cresol
-resources were preserved. Git working changes remain uncommitted/unpushed; the
+resources were preserved. At the time of this manual release, changes were uncommitted/unpushed; the
 VPS release and GitHub source history are separate.
 
 ## GitHub automation verified ? 20 October 2026
@@ -89,3 +89,10 @@ without an image upload from the PC. Public commit metadata and readiness passed
 The same PostgreSQL pod/PVC and all four Cresol pods remained healthy.
 See [GITHUB_DEPLOYMENT.md](GITHUB_DEPLOYMENT.md) for everyday VS Code commit/push
 steps and status commands. Future successful main pushes follow this pipeline.
+
+## Continuation instructions
+
+The full explanation and SSH runbook are in [PORTFOLIO_HANDOFF.md](PORTFOLIO_HANDOFF.md).
+Read [../AGENTS.md](../AGENTS.md) before changing this project. The earlier
+manual-release source was subsequently committed and pushed; GitHub automatic
+deployment is now the normal path. Historical notes do not override this status.
