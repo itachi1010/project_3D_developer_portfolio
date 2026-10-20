@@ -388,3 +388,22 @@ They can coordinate through these files when they have filesystem/repository
 access, or you can paste the handoff into the other chat. Keep one editor per
 file and use Git commits as the shared version history. `CLAUDE.md` points to
 the same agent instructions so the two tools do not maintain competing runbooks.
+
+## Optional background music (20 October 2026)
+
+`src/components/BackgroundMusic.jsx` adds a compact fixed play/pause control
+with a volume/settings panel. Music is off on every page load; only the volume
+preference is remembered. The audio source is assigned after a deliberate click,
+so there is no initial audio download. Admin view excludes the control.
+
+The locally hosted `public/audio/gymnopedie-no-1.mp3` is Satie's Gymnop?die No. 1,
+recording credited to Teknopazzo and dedicated CC0 on Wikimedia Commons.
+See `public/audio/LICENSE.md` for source URL, license and checksum, and
+`public/credits.html` for visitor-facing credit. Default volume is 15%, playback
+loops, and errors show a retry message. No external audio streaming service,
+new dependency, database change or VPS resource change is involved.
+
+Application tests/build passed. Actual Chrome playback/decode, pause, silent
+reload, deferred download, volume persistence, responsive settings panel and
+failed-download feedback were checked. Private repeatable browser QA on this PC
+is `.local-deploy/test-music.cjs`; it is ignored, not part of a fresh clone.

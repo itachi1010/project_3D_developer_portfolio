@@ -281,6 +281,11 @@
       "date": "2026-10-20",
       "from": "Codex",
       "text": "Comprehensive human explanation and SSH/operations continuation runbook created in docs/PORTFOLIO_HANDOFF.md. Root AGENTS.md and CLAUDE.md bootstrap other agents. Portfolio-owned deploy/ssh-vps.ps1 tested with pinned host identity and read-only server commands; private key unchanged, verified public known-host record copied only into ignored local storage. Historical DNS/TLS/Git statements corrected; no application, DB or Cresol changes. Ownership released."
+    },
+    {
+      "date": "2026-10-20",
+      "from": "Codex",
+      "text": "Added optional background piano: Satie Gymnopedie No.1 recording by Teknopazzo, Wikimedia Commons CC0. Locally hosted public/audio/gymnopedie-no-1.mp3 with LICENSE.md and public credit. BackgroundMusic.jsx provides silent initial state, click-to-load/play, pause/loop, 15% default volume, stored volume only, accessible settings and error feedback; excluded from admin view. npm test/build passed (existing Three/chunk warnings). Real Chrome checks passed actual MP3 decoding/play/pause, no pre-click download, reload silent, volume persistence, 320/390/768/1440 layouts and blocked-audio feedback with no page errors. Normal GitHub push initiates deployment; verify live marker separately. No DB/infra/Cresol changes. Ownership released."
     }
   ],
   "confirmed_identity": {
