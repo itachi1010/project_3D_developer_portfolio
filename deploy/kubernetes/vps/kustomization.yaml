@@ -1,0 +1,14 @@
+# Stage application resources only. DNS/TLS/ingress are a separate reviewed step.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: demos
+resources:
+  - ../base
+# Replace local tags with published immutable image digests BEFORE VPS deployment.
+images:
+  - name: benny-portfolio-api
+    newName: ghcr.io/itachi1010/portfolio-api
+    newTag: REPLACE_WITH_RELEASE
+  - name: benny-portfolio-web
+    newName: ghcr.io/itachi1010/portfolio-web
+    newTag: REPLACE_WITH_RELEASE

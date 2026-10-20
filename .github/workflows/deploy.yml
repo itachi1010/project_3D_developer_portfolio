@@ -1,0 +1,87 @@
+name: Test, build and publish portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: portfolio-production
+  cancel-in-progress: true
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install, test and build
+        env:
+          VITE_APP_EMAILJS_SERVICE_ID: ${{ vars.VITE_APP_EMAILJS_SERVICE_ID }}
+          VITE_APP_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_APP_EMAILJS_TEMPLATE_ID }}
+          VITE_APP_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_APP_EMAILJS_PUBLIC_KEY }}
+          VITE_CONTACT_EMAIL: ${{ vars.VITE_CONTACT_EMAIL }}
+        run: |
+          npm ci --no-audit --no-fund
+          npm test
+          python3 -m unittest discover -s deploy -p 'test_github_sync.py' -v
+          npm run build
+      - name: Package production images
+        run: |
+          set -euo pipefail
+          mkdir -p .ci-release .ci-web/html
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from datetime import datetime, timezone
+          Path('dist/release.json').write_text(json.dumps({
+              'commit':os.environ['GITHUB_SHA'],
+              'repository':os.environ['GITHUB_REPOSITORY'],
+              'built_at':datetime.now(timezone.utc).isoformat(),
+          })+'\n')
+          PY
+          cp -a dist/. .ci-web/html/
+          cp deploy/nginx.conf .ci-web/nginx.conf
+          cp deploy/Dockerfile.frontend-static .ci-web/Dockerfile
+          docker build -f deploy/Dockerfile.api -t "benny-portfolio-api:git-${GITHUB_SHA}" .
+          docker build -t "benny-portfolio-web:git-${GITHUB_SHA}" .ci-web
+          docker save "benny-portfolio-api:git-${GITHUB_SHA}" "benny-portfolio-web:git-${GITHUB_SHA}" | gzip -1 > .ci-release/images.tar.gz
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          commit=os.environ['GITHUB_SHA']
+          metadata={'schema_version':1,'repository':os.environ['GITHUB_REPOSITORY'],'commit':commit,'images':{}}
+          for role in ['api','web']:
+              reference=f'benny-portfolio-{role}:git-{commit}'
+              info=json.loads(subprocess.check_output(['docker','image','inspect',reference]))[0]
+              metadata['images'][role]={'reference':reference,'id':info['Id']}
+          Path('.ci-release/release.json').write_text(json.dumps(metadata,indent=2)+'\n')
+          PY
+          (cd .ci-release && sha256sum images.tar.gz release.json > SHA256SUMS)
+      - name: Publish completed release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="portfolio-${GITHUB_SHA}"
+          if existing=$(gh release view "$tag" --json isDraft --jq .isDraft 2>/dev/null); then
+            if [ "$existing" = false ]; then
+              echo "An immutable release already exists for this commit; retaining it."
+              exit 0
+            fi
+            gh release upload "$tag" .ci-release/images.tar.gz .ci-release/release.json .ci-release/SHA256SUMS --clobber
+          else
+            printf 'Automated, tested portfolio build for commit %s. The VPS polls main and deploys only the matching completed release.\n' "$GITHUB_SHA" > .ci-release/notes.md
+            gh release create "$tag" --draft --latest=false --target "$GITHUB_SHA" --title "Portfolio ${GITHUB_SHA:0:12}" --notes-file .ci-release/notes.md .ci-release/images.tar.gz .ci-release/release.json .ci-release/SHA256SUMS
+          fi
+          gh release edit "$tag" --draft=false --latest=false
+          printf '### Portfolio build published\n\nCommit: `%s`\n\nThe VPS checks GitHub every two minutes. Check [the live release](https://www.bennyuchiha.tech/release.json) for the deployed commit.\n' "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"

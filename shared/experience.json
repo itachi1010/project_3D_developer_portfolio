@@ -1,0 +1,40 @@
+[
+  {
+    "title": "Head of IT & Software Engineer",
+    "company_name": "Cresol Chemicals & Applied Products Ltd",
+    "date": "May 2024 – Present",
+    "location": "Kano, Nigeria",
+    "description": "Own the software behind manufacturing, sales, inventory and digital commerce.",
+    "points": [
+      "Designed and built the Django/PostgreSQL ERP connecting inventory, production, customer ledgers, invoicing, finance, HR and reporting.",
+      "Developed REST APIs for Flutter field-sales applications and a shared backend for Cresol Store's website, mobile app and staff dashboard.",
+      "Built operational tools including product label printing, encrypted backup workflows and an integrated business AI assistant.",
+      "Maintain deployments, investigate production issues and translate day-to-day business requirements into working software."
+    ],
+    "iconBg": "#292047"
+  },
+  {
+    "title": "Software Developer",
+    "company_name": "ND Western Limited",
+    "date": "June 2023 – August 2023",
+    "location": "Nigeria",
+    "description": "Financial data validation and reconciliation tools.",
+    "points": [
+      "Built tools to validate expenses against business rules and flag inconsistencies in financial records.",
+      "Automated the processing of large Excel datasets for financial reconciliation and reporting."
+    ],
+    "iconBg": "#20354b"
+  },
+  {
+    "title": "Full-Stack Developer",
+    "company_name": "ND Western Limited",
+    "date": "February 2022 – March 2023",
+    "location": "Remote",
+    "description": "Financial management software and delivery automation.",
+    "points": [
+      "Developed a financial management platform with Laravel backend services and a Vue.js frontend.",
+      "Configured GitLab CI/CD workflows and supported Docker deployments on Linux and AWS-hosted applications."
+    ],
+    "iconBg": "#20354b"
+  }
+]

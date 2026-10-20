@@ -1,66 +1,7 @@
-import React from "react";
-import Tilt from "react-tilt";
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
-import { services } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
-
-const ServiceCard = ({ index, title, icon }) => (
-  <Tilt className='xs:w-[250px] w-full'>
-    <motion.div
-      variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-      className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card'
-    >
-      <div
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
-      >
-        <img
-          src={icon}
-          alt='web-development'
-          className='w-16 h-16 object-contain'
-        />
-
-        <h3 className='text-white text-[20px] font-bold text-center'>
-          {title}
-        </h3>
-      </div>
-    </motion.div>
-  </Tilt>
-);
-
-const About = () => {
-  return (
-    <>
-      <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
-      </motion.div>
-
-      <motion.p
-        variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
-      >
-        I'm a skilled software developer with experience in TypeScript and
-        JavaScript, and expertise in frameworks like React, Node.js, and
-        Three.js. I'm a quick learner and collaborate closely with clients to
-        create efficient, scalable, and user-friendly solutions that solve
-        real-world problems. Let's work together to bring your ideas to life!
-      </motion.p>
-
-      <div className='mt-20 flex flex-wrap gap-10'>
-        {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
-        ))}
-      </div>
-    </>
-  );
-};
-
-export default SectionWrapper(About, "about");
+import { person } from '../data/profile';
+export default function About() {
+  return <section id='about' className='section-shell about-section'>
+    <div className='section-heading'><p className='eyebrow'>01 / THE ENGINEER BEHIND THE WORK</p><h2>From business problem<br />to working product<span className='accent-dot'>.</span></h2></div>
+    <div className='about-grid'><div className='about-copy'><p>I’m a backend-focused software engineer who also builds the interfaces people use. My work spans manufacturing operations, commerce, ride-hailing and interactive experiences.</p><p>As Head of IT &amp; Software Engineer at Cresol Chemicals, I designed and built the company’s Django/PostgreSQL ERP and its connected web and mobile tools. I handle the architecture, implementation, debugging and deployment—and stay involved after the software ships.</p><p>Outside that role, I’ve delivered passenger and driver apps for KekeDrop, contributed to product design teams, and built browser and Telegram game experiences.</p><a className='text-link' href={person.linkedin} target='_blank' rel='noreferrer'>More about my background <span aria-hidden='true'>↗</span></a></div><aside className='about-note'><span className='note-symbol' aria-hidden='true'>{'{ }'}</span><h3>Both sides of<br />the request.</h3><p>I build the API and the application consuming it. That makes the product easier to connect, debug and maintain.</p><dl><div><dt>Based in</dt><dd>{person.location}</dd></div><div><dt>Education</dt><dd>B.Eng. Computer Engineering<br /><span>ESUT · 2019–2024</span></dd></div><div><dt>Focus</dt><dd>Backend · Full-stack · Mobile</dd></div></dl></aside></div>
+  </section>;
+}

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portfolio-config
+data:
+  NODE_ENV: production
+  NODE_OPTIONS: --max-old-space-size=128
+  PORT: "5001"
+  TRUST_PROXY: "1"

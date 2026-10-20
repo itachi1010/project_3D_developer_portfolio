@@ -1,0 +1,33 @@
+# LOCAL ONLY: reproduce the VPS demo budget without touching any Cresol cluster.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demos
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.35
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: demos-priority
+value: 1000
+globalDefault: false
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: demos-budget
+  namespace: demos
+spec:
+  hard:
+    requests.cpu: 200m
+    requests.memory: 512Mi
+    limits.cpu: 300m
+    limits.memory: 1Gi
+    requests.storage: 10Gi
+    persistentvolumeclaims: "5"
+    pods: "10"
+    services: "10"
+    services.nodeports: "0"
+    services.loadbalancers: "0"

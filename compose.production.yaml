@@ -1,0 +1,82 @@
+# Production images on this PC; separate project/network/database from all Cresol stacks.
+name: benny_portfolio_preview
+services:
+  portfolio-db:
+    image: postgres:15-bookworm
+    user: "999:999"
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?run deploy/local.ps1 first}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    command: [postgres, -c, shared_buffers=32MB, -c, max_connections=15, -c, work_mem=2MB, -c, maintenance_work_mem=16MB]
+    volumes:
+      - portfolio_data:/var/lib/postgresql/data
+    tmpfs:
+      - /tmp:uid=999,gid=999
+      - /var/run/postgresql:uid=999,gid=999
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 0.15
+    mem_limit: 384m
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U portfolio -d portfolio"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+  portfolio-api:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.api
+    image: benny-portfolio-api:local
+    environment:
+      DATABASE_URL: postgresql://portfolio:${POSTGRES_PASSWORD:?required}@portfolio-db:5432/portfolio
+      PORT: "5001"
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?run deploy/local.ps1 first}
+      TRUST_PROXY: "1"
+    depends_on:
+      portfolio-db: {condition: service_healthy}
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 0.10
+    mem_limit: 192m
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:5001/api/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 12
+    restart: unless-stopped
+  portfolio-web:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.frontend
+      args:
+        VITE_APP_EMAILJS_SERVICE_ID: ${VITE_APP_EMAILJS_SERVICE_ID:-}
+        VITE_APP_EMAILJS_TEMPLATE_ID: ${VITE_APP_EMAILJS_TEMPLATE_ID:-}
+        VITE_APP_EMAILJS_PUBLIC_KEY: ${VITE_APP_EMAILJS_PUBLIC_KEY:-}
+        VITE_CONTACT_NAME: ${VITE_CONTACT_NAME:-Benny}
+        VITE_CONTACT_EMAIL: ${VITE_CONTACT_EMAIL:-}
+    image: benny-portfolio-web:local
+    ports: ["127.0.0.1:${PORTFOLIO_PORT:-8098}:8080"]
+    depends_on:
+      portfolio-api: {condition: service_healthy}
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    cpus: 0.05
+    mem_limit: 64m
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+volumes:
+  portfolio_data:

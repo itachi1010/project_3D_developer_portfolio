@@ -24,6 +24,15 @@ dist-ssr
 *.sw?
 
 .env
+.env.*
+!.env.example
+!.env.production.example
+.local-deploy/
+.ci-release/
+.ci-web/
+__pycache__/
+*.dump
+*.backup
 
 # vscode
 .vscode

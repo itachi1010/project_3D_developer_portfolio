@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { readFileSync } from 'node:fs';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -6,9 +7,15 @@ dotenv.config();
 const { Pool } = pg;
 
 const pool = new Pool({
+  max: 3,
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 10000,
+  query_timeout: 5000,
+  statement_timeout: 5000,
   connectionString:
     process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/mydatabase',
 });
+pool.on('error', (error) => console.error('Idle database connection failed:', error.message));
 
 const normalizeJob = (row) => ({
   ...row,
@@ -16,7 +23,7 @@ const normalizeJob = (row) => ({
   points: Array.isArray(row.points) ? row.points : [],
 });
 
-const defaultJobs = [
+const legacyDemoJobs = [
   {
     title: 'React.js Developer',
     company_name: 'Starbucks',
@@ -73,32 +80,40 @@ export async function initDatabase() {
     );
   `);
 
-  const { rowCount } = await pool.query('SELECT 1 FROM jobs LIMIT 1');
-
-  if (rowCount === 0) {
-    await Promise.all(
-      defaultJobs.map((job) =>
-        pool.query(
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('LOCK TABLE jobs IN SHARE ROW EXCLUSIVE MODE');
+    const { rows } = await client.query('SELECT * FROM jobs');
+    // Replace only untouched tutorial seeds. Edited or user-added records survive.
+    const legacyIds = rows.filter(row => legacyDemoJobs.some(seed =>
+      Object.entries(seed).every(([key, value]) =>
+        JSON.stringify(normalizeJob(row)[key]) === JSON.stringify(value))
+    )).map(row => row.id);
+    if (legacyIds.length) await client.query('DELETE FROM jobs WHERE id = ANY($1::int[])', [legacyIds]);
+    if (!rows.length || legacyIds.length) {
+      const jobs = JSON.parse(readFileSync(new URL('../shared/experience.json', import.meta.url), 'utf8'));
+      for (const job of [...jobs].reverse()) {
+        await client.query(
           `INSERT INTO jobs (title, company_name, date, location, description, points, iconBg)
-           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-          [
-            job.title,
-            job.company_name,
-            job.date,
-            job.location,
-            job.description,
-            job.points,
-            job.iconBg,
-          ]
-        )
-      )
-    );
+           SELECT $1::varchar(255), $2::varchar(255), $3::varchar(255), $4::varchar(255), $5::text, $6::text[], $7::varchar(32)
+           WHERE NOT EXISTS (SELECT 1 FROM jobs WHERE title = $1 AND company_name = $2 AND date = $3)`,
+          [job.title, job.company_name, job.date, job.location, job.description, job.points, job.iconBg]
+        );
+      }
+    }
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
   }
 }
 
 export async function listJobs() {
   const { rows } = await pool.query(
-    'SELECT * FROM jobs ORDER BY created_at DESC'
+    'SELECT * FROM jobs ORDER BY created_at DESC, id DESC'
   );
 
   return rows.map(normalizeJob);

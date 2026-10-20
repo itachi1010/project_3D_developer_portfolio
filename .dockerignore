@@ -24,6 +24,13 @@ dist-ssr
 *.sw?
 
 .env
+.env.*
+.git
+.local-deploy
+.ci-*
+.github
+docs
+deploy/kubernetes
 
 # vscode
 .vscode

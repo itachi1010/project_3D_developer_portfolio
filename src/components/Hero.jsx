@@ -1,51 +1,25 @@
-import { motion } from "framer-motion";
+import { person } from '../data/profile';
 
-import { styles } from "../styles";
-import { ComputersCanvas } from "./canvas";
-
-const Hero = () => {
-  return (
-    <section className={`relative w-full h-screen mx-auto`}>
-      <div
-        className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
-      >
-        <div className='flex flex-col justify-center items-center mt-5'>
-          <div className='w-5 h-5 rounded-full bg-[#915EFF]' />
-          <div className='w-1 sm:h-80 h-40 violet-gradient' />
-        </div>
-
-        <div>
-          <h1 className={`${styles.heroHeadText} text-white`}>
-            Hi, I'm <span className='text-[#915EFF]'>Adrian</span>
-          </h1>
-          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-            I develop 3D visuals, user <br className='sm:block hidden' />
-            interfaces and web applications
-          </p>
-        </div>
+export default function Hero() {
+  return <section className='hero-section portrait-hero' id='home'>
+    <div className='hero-grid' aria-hidden='true' />
+    <div className='hero-content'>
+      <p className='eyebrow'><span className='status-dot' /> {person.location} · Software Engineer</p>
+      <p className='hero-greeting'>Hello, I’m</p>
+      <h1>Benedict<br /><span className='gradient-text'>Chuks-Onah.</span></h1>
+      <p className='hero-description'>I turn real business needs into <strong>reliable backends, thoughtful web experiences and mobile apps.</strong> From Django-powered operations to published Android products, I take ideas through to a working release.</p>
+      <div className='hero-actions'><a className='button-primary' href='#projects'>Explore my work <span aria-hidden='true'>↗</span></a><a className='button-quiet' href={person.resume}>Download résumé <span aria-hidden='true'>↓</span></a></div>
+      <div className='hero-facts'><span><strong>Web + mobile</strong>One connected product</span><span><strong>Backend first</strong>Built for real workflows</span></div>
+    </div>
+    <figure className='hero-portrait'>
+      <div className='portrait-halo' aria-hidden='true' />
+      <div className='portrait-frame'>
+        <img src='/images/benedict-chuks-onah.jpeg' alt='Benedict Chuks-Onah, software engineer' width='979' height='1094' fetchPriority='high' decoding='async' />
+        <figcaption><span>THE ENGINEER BEHIND THE WORK</span><strong>{person.name}</strong><p>Backend · Web · Mobile</p></figcaption>
       </div>
-
-      <ComputersCanvas />
-
-      <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
-        <a href='#about'>
-          <div className='w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2'>
-            <motion.div
-              animate={{
-                y: [0, 24, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-              }}
-              className='w-3 h-3 rounded-full bg-secondary mb-1'
-            />
-          </div>
-        </a>
-      </div>
-    </section>
-  );
-};
-
-export default Hero;
+      <div className='portrait-note'><span aria-hidden='true'>{'{ }'}</span><div>From idea to something useful.<small>Designed, built, shipped.</small></div></div>
+      <span className='portrait-coordinate' aria-hidden='true'>01 / A PERSONAL INTRODUCTION</span>
+    </figure>
+    <a href='#about' className='scroll-link'>GET TO KNOW ME <span aria-hidden='true'>↓</span></a>
+  </section>;
+}

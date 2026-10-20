@@ -23,7 +23,8 @@ router.get('/', async (_req, res) => {
     const jobs = await listJobs();
     res.json({ jobs });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch jobs', error: error.message });
+    console.error('Failed to fetch jobs:', error.message);
+    res.status(500).json({ message: 'Failed to fetch jobs' });
   }
 });
 
@@ -47,7 +48,8 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ job });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to create job', error: error.message });
+    console.error('Failed to create job:', error.message);
+    res.status(500).json({ message: 'Failed to create job' });
   }
 });
 
@@ -66,7 +68,8 @@ router.put('/:id', async (req, res) => {
 
     res.json({ job });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to update job', error: error.message });
+    console.error('Failed to update job:', error.message);
+    res.status(500).json({ message: 'Failed to update job' });
   }
 });
 
@@ -82,7 +85,8 @@ router.delete('/:id', async (req, res) => {
 
     res.json({ message: 'Job removed successfully.' });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to delete job', error: error.message });
+    console.error('Failed to delete job:', error.message);
+    res.status(500).json({ message: 'Failed to delete job' });
   }
 });
 

@@ -16,6 +16,30 @@ const AdminPanel = () => {
   const [form, setForm] = useState(defaultForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [authorization, setAuthorization] = useState('');
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
+
+  const signIn = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setMessage('');
+    const bytes = new TextEncoder().encode(`${username}:${password}`);
+    const header = `Basic ${btoa(String.fromCharCode(...bytes))}`;
+    try {
+      const response = await fetch('/api/admin/session', { headers: { Authorization: header } });
+      if (!response.ok) {
+        const body = await response.json();
+        throw new Error(body.message || 'Sign-in failed.');
+      }
+      setAuthorization(header);
+      setPassword('');
+    } catch (error) {
+      setMessage(error.message || 'Unable to sign in.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadJobs = async () => {
     try {
@@ -52,7 +76,7 @@ const AdminPanel = () => {
 
       const response = await fetch('/api/jobs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: authorization },
         body: JSON.stringify(payload),
       });
 
@@ -86,6 +110,18 @@ const AdminPanel = () => {
         <div className='mt-3 w-[360px] rounded-2xl border border-white/10 bg-[#100d25] p-4 text-white shadow-2xl shadow-black/30'>
           <h3 className='text-lg font-semibold text-white'>Add a job</h3>
 
+          {!authorization ? (
+            <form className='mt-4 space-y-3' onSubmit={signIn}>
+              <label className='block text-sm'>Admin username
+                <input autoComplete='username' value={username} onChange={(event) => setUsername(event.target.value)} required className='mt-1 w-full rounded border border-white/20 bg-[#100d25] p-2' />
+              </label>
+              <label className='block text-sm'>Password
+                <input type='password' autoComplete='current-password' value={password} onChange={(event) => setPassword(event.target.value)} required maxLength={512} className='mt-1 w-full rounded border border-white/20 bg-[#100d25] p-2' />
+              </label>
+              <button disabled={loading} className='rounded bg-[#915eff] px-4 py-2'>{loading ? 'Signing in...' : 'Sign in'}</button>
+            </form>
+          ) : <>
+          <button type='button' className='mt-3 text-sm underline' onClick={() => { setAuthorization(''); setMessage(''); }}>Sign out</button>
           <form className='mt-4 space-y-3' onSubmit={handleSubmit}>
             <input
               name='title'
@@ -149,6 +185,7 @@ const AdminPanel = () => {
               {loading ? 'Saving...' : 'Save job'}
             </button>
           </form>
+          </>}
 
           {message && <p className='mt-3 text-sm text-secondary'>{message}</p>}
 

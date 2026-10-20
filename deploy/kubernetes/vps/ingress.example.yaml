@@ -1,0 +1,23 @@
+# NOT applied by kustomization.yaml. Enable only after DNS, TLS and auth validation.
+# The TLS secret must already contain a valid certificate and private key.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio-public
+  namespace: demos
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts: [bennyuchiha.tech]
+      secretName: portfolio-tls
+  rules:
+    - host: bennyuchiha.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service: {name: portfolio-web, port: {number: 8080}}

@@ -1,102 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { person } from '../data/profile';
 
-import { styles } from "../styles";
-import { navLinks } from "../constants";
-import { logo, menu, close } from "../assets";
-
-const Navbar = () => {
-  const [active, setActive] = useState("");
-  const [toggle, setToggle] = useState(false);
+const links = [['about', 'About'], ['projects', 'Projects'], ['mobile', 'Mobile apps'], ['experience', 'Experience']];
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop > 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    const update = () => setScrolled(window.scrollY > 30);
+    update(); window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
   }, []);
-
-  return (
-    <nav
-      className={`${
-        styles.paddingX
-      } w-full flex items-center py-5 fixed top-0 z-20 ${
-        scrolled ? "bg-primary" : "bg-transparent"
-      }`}
-    >
-      <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
-        <Link
-          to='/'
-          className='flex items-center gap-2'
-          onClick={() => {
-            setActive("");
-            window.scrollTo(0, 0);
-          }}
-        >
-          <img src={logo} alt='logo' className='w-9 h-9 object-contain' />
-          <p className='text-white text-[18px] font-bold cursor-pointer flex '>
-            Adrian &nbsp;
-            <span className='sm:block hidden'> | JavaScript Mastery</span>
-          </p>
-        </Link>
-
-        <ul className='list-none hidden sm:flex flex-row gap-10'>
-          {navLinks.map((nav) => (
-            <li
-              key={nav.id}
-              className={`${
-                active === nav.title ? "text-white" : "text-secondary"
-              } hover:text-white text-[18px] font-medium cursor-pointer`}
-              onClick={() => setActive(nav.title)}
-            >
-              <a href={`#${nav.id}`}>{nav.title}</a>
-            </li>
-          ))}
-        </ul>
-
-        <div className='sm:hidden flex flex-1 justify-end items-center'>
-          <img
-            src={toggle ? close : menu}
-            alt='menu'
-            className='w-[28px] h-[28px] object-contain'
-            onClick={() => setToggle(!toggle)}
-          />
-
-          <div
-            className={`${
-              !toggle ? "hidden" : "flex"
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
-          >
-            <ul className='list-none flex justify-end items-start flex-1 flex-col gap-4'>
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                    active === nav.title ? "text-white" : "text-secondary"
-                  }`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}
-                >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+  return <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+    <nav className='site-nav' aria-label='Main navigation'>
+      <a href='#home' className='wordmark' aria-label={`${person.name} home`}><span className='monogram'>b<span>.</span></span><span className='wordmark-name'>{person.name}<span className='wordmark-role'> / Software Engineer</span></span></a>
+      <button className='menu-toggle' aria-expanded={open} aria-controls='nav-links' onClick={() => setOpen(!open)}>{open ? 'Close' : 'Menu'} <span aria-hidden='true'>{open ? '−' : '+'}</span></button>
+      <div id='nav-links' className={`nav-links ${open ? 'is-open' : ''}`}>
+        {links.map(([id, text]) => <a href={`#${id}`} key={id} onClick={() => setOpen(false)}>{text}</a>)}
+        <a className='nav-contact' href='#contact' onClick={() => setOpen(false)}>Let’s talk <span aria-hidden='true'>↗</span></a>
       </div>
     </nav>
-  );
-};
-
-export default Navbar;
+  </header>;
+}

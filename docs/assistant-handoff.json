@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-20T08:59:46.855918+00:00",
+  "project": "Benedict Chuks-Onah software engineering portfolio",
+  "repository": "https://github.com/itachi1010/project_3D_developer_portfolio.git",
+  "local_path": "D:\\Documents\\CODE\\javascript\\3js\\project_3D_developer_portfolio",
+  "current_phase": "github_automation_preparing_first_push",
+  "coordination": {
+    "mechanism": "Shared filesystem handoff, not a live connection between chat sessions",
+    "rules": [
+      "Read this file and git diff before editing. Preserve unknown changes.",
+      "Only one assistant edits a given file at a time. Record ownership before changing files.",
+      "Never store passwords, private keys, tokens, kubeconfigs, or DATABASE_URL credentials here.",
+      "Do not apply local bootstrap resources or change Cresol infrastructure on the VPS.",
+      "Local setup and testing completed. User authorized VPS hosting on 19 October 2026; Cloudflare account/nameserver steps are user-operated.",
+      "Update statuses with evidence, timestamps, and unresolved questions; do not mark a plan as deployed."
+    ],
+    "active_owner": "Codex GitHub automation",
+    "user_reported_other_assistant_idle": true,
+    "next_owner": "User explicitly authorized commit/push and automatic GitHub-based deployments. Implementation/verification in progress; do not edit deployment files concurrently."
+  },
+  "answers_to_other_assistant": {
+    "cluster_type": "Existing single-node K3s, not a multi-node HA cluster",
+    "kubernetes_already_installed": true,
+    "server": "45.9.191.177",
+    "node": "cresol-vps",
+    "observed_version": "v1.35.9+k3s1",
+    "observed_os": "Ubuntu 26.04.1 LTS",
+    "server_capacity": {
+      "vcpu": 2,
+      "ram_mib_approx": 7936,
+      "disk_gb_approx": 100
+    },
+    "namespace": "demos",
+    "priority_class": "demos-priority",
+    "cresol_namespace_do_not_modify": "cresol-store",
+    "domain": "bennyuchiha.tech",
+    "observed_domain_A_record": "Cloudflare proxy enabled; public Google/Cloudflare resolvers return Cloudflare edge IPs. Origin was verified as 45.9.191.177 before proxy activation.",
+    "dns_status": "Registry delegates to ram.ns.cloudflare.com and sasha.ns.cloudflare.com. Cloudflare public DNS active; local ISP resolver still returns stale Hostinger parking address.",
+    "tls": "Let’s Encrypt issued for bennyuchiha.tech and www.bennyuchiha.tech; demos/portfolio-tls installed. Expires 2027-01-17. Dedicated renewal timer enabled. Confirm Cloudflare Full (strict) with user; successful HTTPS does not expose account SSL mode.",
+    "database": "Separate PostgreSQL 15 StatefulSet in demos with 2Gi node-local PVC; never reuse Cresol's database or credentials",
+    "admin_auth": "Yes. HTTP Basic credential checks added server-side for every write route and admin session check; use HTTPS publicly. No JWT is necessary for this implementation.",
+    "generate_yaml": "Yes, manifests prepared under deploy/kubernetes. VPS ingress deliberately staged separately."
+  },
+  "verified_vps_limits": {
+    "demos_empty_at_inspection": false,
+    "requests_cpu_millicores": 200,
+    "limits_cpu_millicores": 300,
+    "requests_memory_mib": 512,
+    "limits_memory_mib": 1024,
+    "storage_gib": 10,
+    "nodeport_and_loadbalancer_services_allowed": false,
+    "cresol_priority_value": 100000,
+    "demos_priority_value": 1000,
+    "warning": "Same VPS still shares disk/network/kernel. Quotas bound configured resources, not complete hardware isolation. Existing demos networking allows same-namespace peers; it is not a hostile-code sandbox.",
+    "current_project": "benny-portfolio, three ready pods and one bound 2Gi PVC"
+  },
+  "proposed_portfolio_resources": {
+    "frontend": {
+      "replicas": 1,
+      "request_cpu_m": 20,
+      "limit_cpu_m": 50,
+      "request_memory_mib": 16,
+      "limit_memory_mib": 64
+    },
+    "api": {
+      "replicas": 1,
+      "request_cpu_m": 50,
+      "limit_cpu_m": 100,
+      "request_memory_mib": 64,
+      "limit_memory_mib": 192
+    },
+    "database": {
+      "replicas": 1,
+      "request_cpu_m": 75,
+      "limit_cpu_m": 150,
+      "request_memory_mib": 128,
+      "limit_memory_mib": 384,
+      "storage_gib": 2
+    },
+    "totals": {
+      "request_cpu_m": 145,
+      "limit_cpu_m": 300,
+      "request_memory_mib": 208,
+      "limit_memory_mib": 640
+    },
+    "deployment_strategy": "Recreate: no extra surge pods under the existing quota; brief update downtime accepted for a demo",
+    "capacity_note": "Uses all demos CPU limit allowance. Additional demos cannot be scheduled under this budget until allocations are revised. Resource figures are initial limits, not measured minimum requirements."
+  },
+  "work": [
+    {
+      "id": "deployment",
+      "owner": "Codex deployment session",
+      "status": "local_validated_vps_manifests_staged",
+      "scope": [
+        "deploy/**",
+        "compose.production.yaml",
+        ".gitignore",
+        ".dockerignore",
+        ".env.production.example",
+        "docs/**"
+      ]
+    },
+    {
+      "id": "auth-and-readiness",
+      "owner": "Codex deployment session",
+      "status": "implemented_unit_test_passed",
+      "scope": [
+        "server/**",
+        "src/components/AdminPanel.jsx"
+      ]
+    },
+    {
+      "id": "contact-recipient",
+      "owner": "Codex deployment session",
+      "status": "real_contact_and_mailto_fallback_implemented",
+      "scope": [
+        "src/components/Contact.jsx"
+      ],
+      "note": "Verified email configured. Form opens mail draft without EmailJS; optional direct delivery requires provider configuration. No email was sent."
+    },
+    {
+      "id": "local-smoke",
+      "owner": "Codex deployment session",
+      "status": "passed"
+    },
+    {
+      "id": "local-kubernetes",
+      "owner": "Codex deployment session",
+      "status": "passed"
+    },
+    {
+      "id": "vps-rollout",
+      "owner": "Codex VPS deployment",
+      "status": "public_https_live_verified"
+    },
+    {
+      "id": "portfolio-personalization",
+      "owner": "Codex portfolio personalization",
+      "status": "complete_local_compose_and_kubernetes_validated",
+      "scope": [
+        "src/**",
+        "shared/**",
+        "server/db.js",
+        "public/projects/**",
+        "public/models/phone/**",
+        "public/Benedict-Onah-Resume.pdf",
+        "docs/PROFILE_SOURCES.md"
+      ]
+    },
+    {
+      "id": "portrait-and-name",
+      "owner": "Codex portrait and identity update",
+      "status": "deployed_public_https_browser_validated",
+      "scope": [
+        "src/components/Hero.jsx",
+        "src/components/Navbar.jsx",
+        "src/portfolio.css",
+        "src/data/profile.js",
+        "index.html",
+        "src/App.jsx",
+        "public/images/benedict-chuks-onah.jpeg",
+        "public/Benedict-Onah-Resume.pdf"
+      ]
+    },
+    {
+      "id": "github-automation",
+      "owner": "Codex GitHub automation",
+      "status": "implementation_complete_validation_in_progress",
+      "scope": [
+        ".github/workflows/deploy.yml",
+        "deploy/github-sync.py",
+        "deploy/install-github-sync.sh",
+        "deploy/test_github_sync.py",
+        "docs/GITHUB_DEPLOYMENT.md"
+      ]
+    }
+  ],
+  "validation": {
+    "admin_auth_unit_tests": "passed",
+    "compose_build_and_smoke": "passed: production images healthy; anonymous writes rejected; authenticated create/update/delete passed; readiness failed while DB stopped and recovered; test record survived DB restart and was removed",
+    "kubernetes_validation": "passed on isolated portfolio-local K3s v1.35.9+k3s1: three ready pods under restricted Pod Security, 2Gi PVC bound; exact quota use verified; CRUD/auth/probes passed; temporary record survived DB pod replacement and was deleted",
+    "dependency_audit": "npm audit --omit=dev found 2 moderate findings in react-router/react-router-dom; no high or critical runtime findings. Review a compatible upgrade separately.",
+    "browser": "passed in Chrome against personalized Compose and Kubernetes previews: verified identity, project filters, passenger/driver and screenshot switching, navigation, 1440/390/320px widths, no page errors; no-WebGL fallback also passed",
+    "measured_compose_idle_memory_mib": {
+      "frontend": 12.84,
+      "api": 26.93,
+      "database": 20.59
+    },
+    "quota_boundary": "passed: server dry-run rejected additional CPU above 300m; no probe pod created",
+    "repeat_local_deploy": "passed: existing Secret preserved, database started first, app pods refreshed with zero current restarts",
+    "ignored_credentials": "git check-ignore confirmed .env.production.local and .local-deploy/kubeconfig.yaml are ignored",
+    "local_urls": {
+      "compose": "http://localhost:8098",
+      "kubernetes": "http://localhost:8099",
+      "vps_private_ssh": "http://localhost:8100"
+    },
+    "notes": [
+      "Initial local K3s v1.35.2 control plane repeatedly failed on cloud-controller RBAC startup. Only the newly created empty portfolio cluster was replaced with v1.35.9 matching the VPS. No existing cluster was deleted or changed.",
+      "Current source and production images passed backend smoke checks; Chrome browser check confirmed admin login/logout and rendered 3D desktop/mobile views.",
+      "EmailJS delivery was not tested and remains unconfigured. Public DNS/TLS and image publication remain pending.",
+      "Personalization complete. Real KekeDrop Play screenshots on Quaternius CC0 phone; six project cards; public resume; ERP screenshot uses synthetic data. See docs/PROFILE_SOURCES.md."
+    ],
+    "personalized_experience": "passed: May 2024 Cresol start, three verified roles in both local databases; transactional migration repeated without duplication and preserved a custom test record, which was then removed",
+    "personalized_assets": "HTTP 200 on local Kubernetes for phone GLB, public resume PDF, synthetic ERP preview and staging storefront capture",
+    "cresol_unchanged": "After portfolio rollout and DB tests, all four existing Cresol pod names/restart counts unchanged and ready. Cresol workloads, database, PVCs, Secrets, quotas and routing not edited.",
+    "vps_portfolio": "PASS: separate demos deployment, verified profile, static assets, probes, admin authentication, CRUD, anonymous write rejection, test record survived only portfolio DB pod replacement and was removed.",
+    "vps_browser": "PASS: installed Chrome through private SSH tunnel localhost:8100, personal content, phone/app/screenshot switching, project filters, navigation and responsive widths; no page errors.",
+    "vps_backup": "PASS: custom-format dump restored into a separate temporary test database with three roles; test DB removed. One access-restricted off-server copy on PC, hash verified. Daily server backup timer enabled; recurring off-server replication not configured.",
+    "vps_domain": "PASS: apex and www have verified origin/public HTTPS and readiness. www homepage HTTP 200 through Cloudflare Lagos edge. HTTP redirects to HTTPS; HTTP-01 challenge works through proxy. Local/ISP cache still stale.",
+    "vps_idle_sample": "Brief sample only: API 1m CPU/23Mi, PostgreSQL 18m/30Mi, frontend 1m/2Mi; not a load test.",
+    "public_browser": "PASS after portrait release: personal content, mobile phone app/screenshot switching, project filters, navigation, responsive widths; no page errors.",
+    "certificate_renewal": "PASS: Certbot staging dry-run succeeded for both apex and www; production certificate remains installed. Portfolio renewal timer active.",
+    "portrait_and_name": "PASS over public HTTPS: corrected name in page title/header/hero/footer, real portrait loads, 1440/768/390/320px widths, no overflow/page errors, subtle CSS animation and reduced-motion disable. Live downloaded single-page resume has corrected hyphenated name.",
+    "git_state": "Verified GitHub main and local HEAD both a7000a79b041df280bb0f0deb72df954eb451f18. Source edits remain working-tree modifications/untracked files, not unpushed commits. Deployment uses release artifacts independently of GitHub."
+  },
+  "open_items": [
+    "Optional EmailJS direct delivery; current real-email mailto draft works.",
+    "Configure recurring off-server backups; first dump/restore and one off-server copy are verified.",
+    "Review existing dependency advisories separately.",
+    "GitHub source push/registry publication were not performed. Imported versioned images support this single node; new nodes need explicit image distribution.",
+    "Review demos resource allocation before adding more projects: portfolio uses current 300m CPU limit."
+  ],
+  "messages": [
+    {
+      "from": "Codex deployment session",
+      "to": "Other assistant",
+      "at": "2026-10-19T12:38:17Z",
+      "text": "Existing VPS is already configured for a low-priority demos namespace. Do not create another cluster, overwrite quotas, or touch cresol-store. I am implementing local containers, admin auth, probes, low-resource Kubernetes manifests, and tests. Read docs/DEPLOYMENT.md and this file for results before continuing. No push or VPS mutation has been performed."
+    },
+    {
+      "from": "Codex deployment session",
+      "to": "Other assistant",
+      "at": "2026-10-19T12:58:40Z",
+      "text": "Local setup is complete and validated. Read docs/DEPLOYMENT.md for commands, limits and staged VPS rollout requirements. Use localhost:8099 for the local Kubernetes preview; localhost:8098 is a separate Compose/database preview. Please review the changes, replace tutorial identity/content with the user's actual portfolio information, configure EmailJS only after getting the intended recipient, and review dependency advisories. Do not deploy placeholder image tags, apply local/bootstrap.yaml to the VPS, edit Cresol resources, or change DNS without reviewing the existing domain hosting. No passwords or private SSH material belong in this file. Append your findings here and preserve the rest."
+    },
+    {
+      "from": "Codex portfolio personalization",
+      "to": "Other assistant",
+      "at": "2026-10-19T13:54:01.645001+00:00",
+      "text": "Personalization and local validation complete; ownership released. User confirms Cresol starts May 2024. Identity/project sources: docs/PROFILE_SOURCES.md, src/data/profile.js, shared/experience.json. Real KekeDrop passenger/driver Play screenshots are mapped to a Quaternius CC0 phone. Six categorized projects, genuine experience, public resume, real contact and mail draft fallback replace tutorial placeholders. ERP preview contains clearly labelled synthetic data, not live records. Raw resumes and DB backups remain ignored/private. Build, auth/API smoke, repeat migration/custom preservation, responsive browser interactions and no-WebGL fallback passed. Updated previews: localhost:8098 Compose, localhost:8099 Kubernetes; separate databases. No push, DNS change or VPS deployment performed. Review pending release items before rollout; do not modify Cresol infrastructure."
+    },
+    {
+      "from": "Codex VPS deployment",
+      "to": "Other assistant",
+      "at": "2026-10-19T14:34:57.305369+00:00",
+      "text": "User authorized VPS hosting. Release 20261019T141935Z deployed and validated in existing demos; no Cresol resource edits. Images built on PC, SSH-transferred/imported; no registry/GitHub push. Three ready pods, own 2Gi PVC, fresh private server credentials. API/auth/CRUD, portfolio DB pod persistence, dump restore and off-server hash check passed. Browser passed via private localhost:8100 SSH tunnel. Read docs/VPS_STATUS.md and docs/CLOUDFLARE.md. User is onboarding bennyuchiha.tech to Cloudflare; DNS still parking at last check. TLS route/hook/renewal prepared but certificate NOT issued; public launch pending DNS then run /opt/benny-portfolio/ops/vps-issue-tls.sh and renewal dry-run. Do not modify Cresol or apply bootstrap resources."
+    },
+    {
+      "from": "Codex VPS deployment",
+      "to": "Other assistant",
+      "at": "2026-10-19T15:52:39.775534+00:00",
+      "text": "Cloudflare nameservers propagated to public resolvers; user enabled proxy. Added www routing and issued valid Let’s Encrypt certificate for apex+www; TLS Secret installed, expiry 2027-01-17. Actual public HTTPS readiness passes for both and www homepage returns 200 via Lagos Cloudflare edge. Chrome public-HTTPS UI/responsive tests passed with edge DNS override. PC/current ISP resolver still returns old Hostinger address even after client cache flush; advised Chrome secure DNS Cloudflare. User must confirm Full (strict) in account SSL settings. Certbot renewal dry-run started; record final result when available. Cresol resources untouched."
+    },
+    {
+      "from": "Codex VPS deployment",
+      "to": "Other assistant",
+      "at": "2026-10-19T15:53:40.209453+00:00",
+      "text": "Final certificate renewal dry-run PASSED for both names through Cloudflare. Three portfolio pods and all four Cresol pods remain ready. Public HTTPS/browser checks passed. Only account Full (strict) confirmation and local stale resolver troubleshooting remain with user."
+    },
+    {
+      "from": "User via Codex",
+      "to": "Other assistant",
+      "at": "2026-10-19T15:56:05.726941+00:00",
+      "text": "User confirmed Full (strict) is selected in Cloudflare. Public portfolio deployment and Cloudflare SSL setup complete. No additional DNS or certificate configuration needed for apex and www."
+    },
+    {
+      "from": "Codex portrait and identity update",
+      "to": "Other assistant",
+      "at": "2026-10-19T16:32:11.166563+00:00",
+      "text": "User explicitly corrected visible name to Benedict Chuks-Onah and supplied Benedict.jpeg. Hero now has a professional portrait frame, brief intro and subtle CSS animation with reduced-motion support. Navigation/metadata/footer/resume corrected. Release 20261019T162457Z deployed frontend-only; public portrait/responsive, real phone/filter/navigation interactions and downloaded resume checks passed. API and DB pods retained, all Cresol pods unchanged and healthy. Container Vite compilation stalled locally; cancelled without remote rollout, built Vite on PC and packaged same non-root Nginx image. deploy/vps-deploy.py now supports --frontend-only --prebuilt-frontend. No Git commit/push performed; explained M/U and independent VPS release to user. Ownership released."
+    }
+  ],
+  "confirmed_identity": {
+    "name": "Benedict Chuks-Onah",
+    "display_name": "Benedict Chuks-Onah",
+    "cresol_start": "May 2024",
+    "date_source": "User explicitly confirmed May 2024",
+    "name_source": "User explicitly requested this exact spelling on 19 October 2026."
+  },
+  "cloudflare": {
+    "requested": true,
+    "zone": "bennyuchiha.tech",
+    "status": "active_proxied_https_verified_full_strict_user_confirmed",
+    "origin": "45.9.191.177",
+    "initial_proxy": "DNS only until origin TLS verified",
+    "target_ssl_mode": "Full (strict)",
+    "nameservers": [
+      "ram.ns.cloudflare.com",
+      "sasha.ns.cloudflare.com"
+    ],
+    "proxy": "enabled",
+    "certificate": "Let’s Encrypt apex + www, expires 2027-01-17",
+    "ssl_mode": "Full (strict)",
+    "ssl_mode_evidence": "User explicitly confirmed selection in Cloudflare SSL/TLS Overview."
+  },
+  "vps_release": {
+    "id": "20261019T162457Z",
+    "path": "/opt/benny-portfolio/releases/20261019T162457Z",
+    "namespace": "demos",
+    "distribution": "Frontend-only release. Vite built on PC and packaged into the same non-root Nginx runtime, SSH transferred and imported. Existing API image and database preserved. No Git commit or push.",
+    "status_document": "docs/VPS_STATUS.md",
+    "credentials": "Privately stored on VPS and access-restricted ignored PC file; no secret values in handoff.",
+    "previous_id": "20261019T141935Z"
+  },
+  "git_automation": {
+    "status": "implementation_complete_pending_first_push_and_live_validation",
+    "branch": "main",
+    "workflow": ".github/workflows/deploy.yml",
+    "agent": "deploy/github-sync.py",
+    "guide": "docs/GITHUB_DEPLOYMENT.md",
+    "secrets": "No VPS SSH key or kubeconfig in GitHub; public release pull uses no GitHub token on VPS."
+  }
+}
