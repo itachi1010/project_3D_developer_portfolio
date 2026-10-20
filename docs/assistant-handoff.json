@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-20T08:59:46.855918+00:00",
+  "updated_at": "2026-10-20T09:07:15.488953+00:00",
   "project": "Benedict Chuks-Onah software engineering portfolio",
   "repository": "https://github.com/itachi1010/project_3D_developer_portfolio.git",
   "local_path": "D:\\Documents\\CODE\\javascript\\3js\\project_3D_developer_portfolio",
-  "current_phase": "github_automation_preparing_first_push",
+  "current_phase": "github_auto_deployment_live_validated",
   "coordination": {
     "mechanism": "Shared filesystem handoff, not a live connection between chat sessions",
     "rules": [
@@ -15,9 +15,9 @@
       "Local setup and testing completed. User authorized VPS hosting on 19 October 2026; Cloudflare account/nameserver steps are user-operated.",
       "Update statuses with evidence, timestamps, and unresolved questions; do not mark a plan as deployed."
     ],
-    "active_owner": "Codex GitHub automation",
+    "active_owner": null,
     "user_reported_other_assistant_idle": true,
-    "next_owner": "User explicitly authorized commit/push and automatic GitHub-based deployments. Implementation/verification in progress; do not edit deployment files concurrently."
+    "next_owner": "GitHub is the normal source of deployments. Edit, commit and push main; GitHub Actions builds/releases and the VPS sync timer deploys. Use docs/GITHUB_DEPLOYMENT.md. Host-agent/infra changes still require explicit installation."
   },
   "answers_to_other_assistant": {
     "cluster_type": "Existing single-node K3s, not a multi-node HA cluster",
@@ -166,7 +166,7 @@
     {
       "id": "github-automation",
       "owner": "Codex GitHub automation",
-      "status": "implementation_complete_validation_in_progress",
+      "status": "committed_pushed_CI_passed_timer_deployed_live_commit_verified",
       "scope": [
         ".github/workflows/deploy.yml",
         "deploy/github-sync.py",
@@ -212,13 +212,14 @@
     "public_browser": "PASS after portrait release: personal content, mobile phone app/screenshot switching, project filters, navigation, responsive widths; no page errors.",
     "certificate_renewal": "PASS: Certbot staging dry-run succeeded for both apex and www; production certificate remains installed. Portfolio renewal timer active.",
     "portrait_and_name": "PASS over public HTTPS: corrected name in page title/header/hero/footer, real portrait loads, 1440/768/390/320px widths, no overflow/page errors, subtle CSS animation and reduced-motion disable. Live downloaded single-page resume has corrected hyphenated name.",
-    "git_state": "Verified GitHub main and local HEAD both a7000a79b041df280bb0f0deb72df954eb451f18. Source edits remain working-tree modifications/untracked files, not unpushed commits. Deployment uses release artifacts independently of GitHub."
+    "git_state": "All previous local project changes committed and pushed in de85ec9. GitHub Actions succeeded and its completed release was pulled/deployed by the VPS timer without a PC image upload.",
+    "github_auto_deploy": "PASS: first CI run 39397669156; source checkout and public release.json both de85ec9; archive checksums and image IDs verified; exact live commit and API readiness passed. Service timer active. API/web images changed, same DB pod/PVC and Cresol pods preserved.",
+    "agent_budget": "Initial automatic deployment took about 59 seconds, 9.2 CPU seconds, 243MiB peak memory, within service 30% CPU/512Mi caps. Idle polls are lightweight; no VPS application builds."
   },
   "open_items": [
     "Optional EmailJS direct delivery; current real-email mailto draft works.",
     "Configure recurring off-server backups; first dump/restore and one off-server copy are verified.",
     "Review existing dependency advisories separately.",
-    "GitHub source push/registry publication were not performed. Imported versioned images support this single node; new nodes need explicit image distribution.",
     "Review demos resource allocation before adding more projects: portfolio uses current 300m CPU limit."
   ],
   "messages": [
@@ -269,6 +270,12 @@
       "to": "Other assistant",
       "at": "2026-10-19T16:32:11.166563+00:00",
       "text": "User explicitly corrected visible name to Benedict Chuks-Onah and supplied Benedict.jpeg. Hero now has a professional portrait frame, brief intro and subtle CSS animation with reduced-motion support. Navigation/metadata/footer/resume corrected. Release 20261019T162457Z deployed frontend-only; public portrait/responsive, real phone/filter/navigation interactions and downloaded resume checks passed. API and DB pods retained, all Cresol pods unchanged and healthy. Container Vite compilation stalled locally; cancelled without remote rollout, built Vite on PC and packaged same non-root Nginx image. deploy/vps-deploy.py now supports --frontend-only --prebuilt-frontend. No Git commit/push performed; explained M/U and independent VPS release to user. Ownership released."
+    },
+    {
+      "from": "Codex GitHub automation",
+      "to": "Other assistant",
+      "at": "2026-10-20T09:07:15.488953+00:00",
+      "text": "User explicitly authorized GitHub push and automatic deployments. All accumulated project work pushed in de85ec9; Actions run 39397669156 passed and published portfolio-<sha>. Installed fixed root-owned Git sync agent from that GitHub commit, not PC file copies. Two-minute systemd timer pulled source, verified/downloaded CI images, backed up portfolio DB and updated only portfolio API/web. Public release.json matched de85ec9; API ready. Existing DB pod/PVC and all Cresol pods retained. Normal updates now commit+push main. No VPS key/password/kubeconfig in GitHub, no CI build on VPS. See docs/GITHUB_DEPLOYMENT.md. Final documentation follow-up also goes through the same automatic pipeline."
     }
   ],
   "confirmed_identity": {
@@ -294,7 +301,21 @@
     "ssl_mode": "Full (strict)",
     "ssl_mode_evidence": "User explicitly confirmed selection in Cloudflare SSL/TLS Overview."
   },
-  "vps_release": {
+  "git_automation": {
+    "status": "first_automatic_git_based_deployment_verified",
+    "branch": "main",
+    "workflow": ".github/workflows/deploy.yml",
+    "agent": "deploy/github-sync.py",
+    "guide": "docs/GITHUB_DEPLOYMENT.md",
+    "secrets": "No VPS SSH key or kubeconfig in GitHub; public release pull uses no GitHub token on VPS.",
+    "validation_commit": "de85ec9cdf3b97bad274919b83c41460e9653e8c",
+    "validation_run": "https://github.com/itachi1010/project_3D_developer_portfolio/actions/runs/39397669156",
+    "poll_interval": "2 minutes after the prior sync completes",
+    "live_commit_endpoint": "https://www.bennyuchiha.tech/release.json",
+    "vps_source": "/var/lib/benny-portfolio-git/source",
+    "vps_status": "/var/lib/benny-portfolio-git/status.json"
+  },
+  "last_manual_release": {
     "id": "20261019T162457Z",
     "path": "/opt/benny-portfolio/releases/20261019T162457Z",
     "namespace": "demos",
@@ -303,12 +324,12 @@
     "credentials": "Privately stored on VPS and access-restricted ignored PC file; no secret values in handoff.",
     "previous_id": "20261019T141935Z"
   },
-  "git_automation": {
-    "status": "implementation_complete_pending_first_push_and_live_validation",
-    "branch": "main",
-    "workflow": ".github/workflows/deploy.yml",
-    "agent": "deploy/github-sync.py",
-    "guide": "docs/GITHUB_DEPLOYMENT.md",
-    "secrets": "No VPS SSH key or kubeconfig in GitHub; public release pull uses no GitHub token on VPS."
+  "vps_release": {
+    "mode": "GitHub Actions build and fixed VPS Git sync agent",
+    "current_commit_endpoint": "https://www.bennyuchiha.tech/release.json",
+    "status_file": "/var/lib/benny-portfolio-git/status.json",
+    "source_checkout": "/var/lib/benny-portfolio-git/source",
+    "first_verified_commit": "de85ec9cdf3b97bad274919b83c41460e9653e8c",
+    "note": "Runtime status is authoritative for later commits; legacy /opt/benny-portfolio/current points to the last manual release, not the current Git deployment."
   }
 }

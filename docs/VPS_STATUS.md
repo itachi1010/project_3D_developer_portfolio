@@ -1,11 +1,10 @@
 # Portfolio VPS status — 19 October 2026
 
 The personalized portfolio is deployed on `45.9.191.177`, in the existing K3s
-`demos` namespace. Current frontend release: `20261019T162457Z` (initial API release: `20261019T141935Z`). This is a single-node release with
-locally built images imported into containerd, not a GitHub/registry publication.
+`demos` namespace. Production now uses **GitHub-based automatic deployments**, validated on 20 October 2026. The first verified Git deployment was `de85ec9cdf3b97bad274919b83c41460e9653e8c`. The current deployed commit is available at https://www.bennyuchiha.tech/release.json. Earlier manual frontend/API releases remain archived.
 Source and image archives, image IDs, rendered manifests and validated SHA-256
 checksums are under `/opt/benny-portfolio/releases/<release>/`.
-The active release symlink is `/opt/benny-portfolio/current`.
+The legacy symlink `/opt/benny-portfolio/current` identifies the last manual release. For current Git deployments, use `/var/lib/benny-portfolio-git/status.json`; source pulled from GitHub is under `/var/lib/benny-portfolio-git/source`.
 
 ## Confirmed
 
@@ -80,3 +79,13 @@ Public HTTPS browser checks passed at desktop, tablet and phone widths, includin
 the retained 3D phone controls and project filters. API/database pods and Cresol
 resources were preserved. Git working changes remain uncommitted/unpushed; the
 VPS release and GitHub source history are separate.
+
+## GitHub automation verified ? 20 October 2026
+
+All accumulated project changes were committed and pushed to GitHub. The first
+Actions build (run 39397669156) passed tests and published a completed release.
+The VPS timer then pulled that commit and deployed the matching verified images
+without an image upload from the PC. Public commit metadata and readiness passed.
+The same PostgreSQL pod/PVC and all four Cresol pods remained healthy.
+See [GITHUB_DEPLOYMENT.md](GITHUB_DEPLOYMENT.md) for everyday VS Code commit/push
+steps and status commands. Future successful main pushes follow this pipeline.

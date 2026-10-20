@@ -1,5 +1,7 @@
 # Portfolio deployment and assistant handoff
 
+**Normal production updates now use [GitHub automatic deployment](GITHUB_DEPLOYMENT.md), validated on 20 October 2026.** The local/manual procedures below remain available for testing and recovery.
+
 Target domain: **bennyuchiha.tech**. Local validation is complete; the user
 authorized VPS hosting on 19 October 2026. Current deployment evidence lives in
 [assistant-handoff.json](assistant-handoff.json). It is a file-based handoff,
