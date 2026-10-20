@@ -7,7 +7,7 @@ function savedVolume() {
     const value = Number(stored);
     if (stored !== null && Number.isFinite(value) && value >= 0 && value <= 1) return value;
   } catch { /* Storage may be unavailable in a private browsing session. */ }
-  return 0.15;
+  return 0.6;
 }
 
 export default function BackgroundMusic() {

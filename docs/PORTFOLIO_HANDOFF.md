@@ -399,7 +399,7 @@ so there is no initial audio download. Admin view excludes the control.
 The locally hosted `public/audio/gymnopedie-no-1.mp3` is Satie's Gymnop?die No. 1,
 recording credited to Teknopazzo and dedicated CC0 on Wikimedia Commons.
 See `public/audio/LICENSE.md` for source URL, license and checksum, and
-`public/credits.html` for visitor-facing credit. Default volume is 15%, playback
+`public/credits.html` for visitor-facing credit. Default volume is 60%, playback
 loops, and errors show a retry message. No external audio streaming service,
 new dependency, database change or VPS resource change is involved.
 
