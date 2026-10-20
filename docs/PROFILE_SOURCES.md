@@ -101,3 +101,5 @@ uses the user's real email; without EmailJS configuration, its form opens the
 visitor's mail application with a draft rather than claiming delivery. No test
 email was sent. Optional direct EmailJS delivery still requires public browser
 configuration and provider-side template/domain setup.
+
+WhatsApp: user confirmed the resume phone is the WhatsApp number on 20 October 2026; published as https://wa.me/2348135169229.

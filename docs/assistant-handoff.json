@@ -286,6 +286,11 @@
       "date": "2026-10-20",
       "from": "Codex",
       "text": "Added optional background piano: Satie Gymnopedie No.1 recording by Teknopazzo, Wikimedia Commons CC0. Locally hosted public/audio/gymnopedie-no-1.mp3 with LICENSE.md and public credit. BackgroundMusic.jsx provides silent initial state, click-to-load/play, pause/loop, 15% default volume, stored volume only, accessible settings and error feedback; excluded from admin view. npm test/build passed (existing Three/chunk warnings). Real Chrome checks passed actual MP3 decoding/play/pause, no pre-click download, reload silent, volume persistence, 320/390/768/1440 layouts and blocked-audio feedback with no page errors. Normal GitHub push initiates deployment; verify live marker separately. No DB/infra/Cresol changes. Ownership released."
+    },
+    {
+      "date": "2026-10-20",
+      "from": "Codex",
+      "text": "Added WhatsApp contact/footer links using user-authorized resume phone +234 813 516 9229. Added Waffles Runner Play here native dialog, official itch.io embed-upload/14036346 (raw CDN blocked by hotlink protection). Server DB enforces exactly three leased slots with atomic SKIP LOCKED acquisition, hashed random tokens, 90-second expiry/20-second renewals, 15-minute cap, explicit/pagehide release, failed-heartbeat unload and expiry safety buffer. Scope is portfolio sessions, not all direct public itch.io play or identified unique humans. Game remains itch-hosted/client-run; no new VPS resources/Cresol changes. Additive table initialized by API; existing experience preserved. HTTP tests/build/workflow lint passed. Real disposable-Postgres test: only 3 of 30 simultaneous requests admitted; expiry, isolation, restart persistence and duration passed. Separate browser contexts confirmed fourth rejected, closing frees slot, retry, Escape/focus, responsive dialog and failed heartbeat unload. Actual official embed loaded Unity to the Tap to Play game screen. CI now supplies a disposable Postgres service for mandatory concurrency test. Ownership released; verify GitHub/live deployment after push."
     }
   ],
   "confirmed_identity": {

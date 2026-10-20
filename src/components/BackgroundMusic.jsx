@@ -26,7 +26,9 @@ export default function BackgroundMusic() {
 
   useEffect(() => {
     const audio = audioRef.current;
-    return () => { wanted.current = false; audio.pause(); };
+    const pauseForGame = () => { wanted.current = false; audio.pause(); setLoading(false); };
+    window.addEventListener('portfolio-game-start', pauseForGame);
+    return () => { window.removeEventListener('portfolio-game-start', pauseForGame); wanted.current = false; audio.pause(); };
   }, []);
 
   async function toggle() {

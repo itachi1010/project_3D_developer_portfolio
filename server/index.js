@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import pool, { initDatabase } from './db.js';
 import { createAdminAuth } from './admin-auth.js';
 import jobsRouter from './routes/jobs.js';
+import { createGameRouter, createGameStore, initGameSessions } from './game-sessions.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
 if (allowedOrigins.length) app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: '1mb' }));
+app.use('/api/game/sessions', createGameRouter(createGameStore(pool), { allowedOrigins }));
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, message: 'Portfolio API is running.' });
@@ -41,6 +43,7 @@ app.use('/api/jobs', (req, res, next) => {
 async function startServer() {
   try {
     await initDatabase();
+    await initGameSessions(pool);
     const server = app.listen(port, '0.0.0.0', () => {
       console.log(`Portfolio API listening on http://0.0.0.0:${port}`);
     });

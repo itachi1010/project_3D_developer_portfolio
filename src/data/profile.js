@@ -3,6 +3,7 @@ import experience from '../../shared/experience.json';
 export const person = {
   name: 'Benedict Chuks-Onah', shortName: 'Benedict', role: 'Software Engineer',
   email: 'onahben977@gmail.com', location: 'Kano, Nigeria',
+  phone: '+234 813 516 9229', whatsapp: 'https://wa.me/2348135169229',
   github: 'https://github.com/itachi1010',
   linkedin: 'https://www.linkedin.com/in/chuks-onah-benedict-660002192/',
   resume: '/Benedict-Onah-Resume.pdf',
@@ -55,7 +56,7 @@ export const projects = [
     description: 'A Unity WebGL game and React-based Telegram Mini App, with rankings, energy and streak systems, reward progression and a Python signup/referral bot.',
     contribution: 'Game and frontend development · collaborative UI/UX',
     stack: ['Unity WebGL', 'React', 'Python', 'Firebase'], visual: 'game',
-    links: [{ label: 'Play on itch.io', href: 'https://bennyuchiha.itch.io/waffles-runner' }, { label: 'View Figma designs', href: 'https://www.figma.com/design/EtZZ57JR6JNv6yYhuFSJN3/Waffle-2?node-id=0-1' }],
+    links: [{ label: 'View Figma designs', href: 'https://www.figma.com/design/EtZZ57JR6JNv6yYhuFSJN3/Waffle-2?node-id=0-1' }],
     details: ['Browser-based gameplay', 'Telegram Mini App interface', 'Live rankings and progression', 'Signup and referral automation'],
   },
   {

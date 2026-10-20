@@ -407,3 +407,59 @@ Application tests/build passed. Actual Chrome playback/decode, pause, silent
 reload, deferred download, volume persistence, responsive settings panel and
 failed-download feedback were checked. Private repeatable browser QA on this PC
 is `.local-deploy/test-music.cjs`; it is ignored, not part of a fresh clone.
+
+## WhatsApp and limited Waffles Runner player (20 October 2026)
+
+User authorized using the resume phone number as WhatsApp: +234 813 516 9229.
+`person.whatsapp` is https://wa.me/2348135169229; Contact and footer links open
+WhatsApp without sending a message automatically.
+
+Waffles Runner now has a Play here button and a responsive native dialog.
+The game iframe is created only after the server grants a session. It uses the
+supported itch.io embed https://itch.io/embed-upload/14036346?color=111621;
+raw html-classic CDN URLs trigger itch.io's hotlink protection. The game remains
+hosted by itch.io and executes in the visitor's browser, not on the VPS.
+Background piano pauses when a game session starts; it is not resumed automatically.
+
+`server/game-sessions.js` creates an additive three-row `portfolio_game_slots`
+table in the portfolio DB at API startup. Acquisition uses row locks with
+SKIP LOCKED, not a frontend counter or process-local memory. Only SHA-256 token
+digests and timestamps are stored. At most three unexpired leases are granted,
+including concurrent requests/multiple API instances. No Cresol database is used.
+
+POST `/api/game/sessions` acquires a slot (201; 429 if full).
+POST `/api/game/sessions/heartbeat` renews a valid token (410 if expired).
+POST `/api/game/sessions/release` frees that token (204).
+Tokens are random, kept in the component's memory, and sent in JSON bodies,
+never query strings. Responses are not cacheable; cross-site browser origins
+are rejected. The lease is 90 seconds, renewed every 20 seconds, with a 15-minute
+maximum. Closing/unmounting/pagehide releases with a beacon; crashed sessions
+expire. Failed renewals and expired local deadlines unload the iframe. A busy
+visitor can explicitly retry. Escape closes and focus returns to Play here.
+
+This limits this portfolio's active play sessions, not unique identified humans
+or direct visits to the public itch.io game. It is not an itch.io-wide quota or
+an anti-abuse/authentication system. Anonymous visitors can occupy the public
+slots; do not claim stronger enforcement. Limiting direct itch.io play would
+require game-side access enforcement/changes outside this portfolio.
+
+The existing DB is backed up by the deployment agent before image updates.
+This additive table leaves experience data unchanged and is harmless to the
+preceding application version if images roll back. No infrastructure limits,
+Pod count, routing, PVC or Cresol workload changes are required.
+
+Tests: HTTP API rejection/failure cases and a real PostgreSQL test of 30
+simultaneous acquisitions, token isolation, expiry, restart persistence and
+maximum duration. `npm test` runs HTTP tests; set GAME_TEST_DATABASE_URL to a
+**disposable test database only** for the DB test, which resets its slot table.
+CI now supplies a disposable PostgreSQL 15 service so the DB test is mandatory
+there. The CI-only password is a dummy test credential, never production access.
+Local browser QA is `.local-deploy/test-game.cjs` (ignored).
+
+Browser checks confirmed only 3 out of 4 simultaneous player windows admitted,
+close/retry frees a slot, Escape restores focus, the dialog fits 320/390/768/1440
+widths and failed heartbeats unload the iframe. The actual supported embed
+loaded Unity to the Tap to Play game screen. No hotlink protection bypass is used.
+The client expires its iframe 5 seconds before the server lease deadline to
+allow for timer/network variation. Ordinary browser timers cannot enforce limits
+on people who deliberately access public itch.io URLs outside this UI.

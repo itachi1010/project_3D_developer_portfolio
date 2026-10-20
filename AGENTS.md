@@ -90,3 +90,17 @@ Recurring off-server backups are not configured; one private off-server dump was
 validated. EmailJS is optional and unconfigured. Review dependency advisories
 separately. No further project fits the current demos CPU budget without review.
 See the handoff for recovery commands, maintenance timers and verified evidence.
+
+## Game sessions and WhatsApp
+
+- WhatsApp uses the user-authorized resume number +234 813 516 9229, centralized
+  in `src/data/profile.js`; contact/footer links use `person.whatsapp`.
+- `src/components/GamePlayer.jsx` is a click-to-open dialog; server capacity is
+  enforced by `server/game-sessions.js`, three durable DB slots, 90-second leases,
+  20-second renewals, 15-minute maximum. Do not replace it with localStorage or
+  process memory. Never publish session tokens in URLs/logs.
+- Use supported itch.io embed-upload URL; raw CDN embedding is blocked.
+  The limit covers portfolio sessions, not direct public itch.io visitors.
+- `npm test` includes game HTTP tests. Real DB tests require
+  `GAME_TEST_DATABASE_URL` pointing only at a disposable DB (slots reset by test).
+  CI provides PostgreSQL for this test. See the full handoff for routes/behavior.
