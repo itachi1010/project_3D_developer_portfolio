@@ -4,7 +4,7 @@ import GamePlayer from './GamePlayer';
 
 function ProjectVisual({ project }) {
   if (project.image) return <img src={project.image} alt={`${project.name}: ${project.imageNote}`} loading='lazy' className={`project-image ${project.id === 'kekedrop' ? 'is-mobile-shot' : ''}`} />;
-  return <div className={`project-art project-art-${project.visual}`} aria-hidden='true'><span className='art-orbit orbit-one' /><span className='art-orbit orbit-two' /><span className='art-code'>{project.visual === 'tracking' ? 'A ━━━ B' : project.visual === 'game' ? 'W' : '50 / 50'}</span><span className='art-caption'>{project.kind}</span></div>;
+  return <div className={`project-art project-art-${project.visual}`} aria-hidden='true'><span className='art-orbit orbit-one' /><span className='art-orbit orbit-two' /><span className='art-code'>{project.visual === 'tracking' ? 'A ━━━ B' : project.visual === 'game' ? 'W' : project.visual === 'health' ? '+ Rx' : '50 / 50'}</span><span className='art-caption'>{project.kind}</span></div>;
 }
 export default function Works() {
   const [filter, setFilter] = useState('All work');

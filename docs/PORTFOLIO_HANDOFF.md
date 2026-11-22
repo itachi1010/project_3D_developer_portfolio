@@ -408,6 +408,20 @@ reload, deferred download, volume persistence, responsive settings panel and
 failed-download feedback were checked. Private repeatable browser QA on this PC
 is `.local-deploy/test-music.cjs`; it is ignored, not part of a fresh clone.
 
+## Live demos added (22 November 2026)
+
+Projects now number nine. New cards: Medicus ex Machina (telemedicine/pharmacy prototype,
+CSS illustration, no public link until its demo is deployed), Beauty Shop
+(https://beauty-shop.bennyuchiha.tech) and Benny Fiver (https://fiver.bennyuchiha.tech), with
+screenshots in `public/projects/`. Cresol ERP links its public demo (https://erp.bennyuchiha.tech,
+made-up data, nightly reset). Cresol Store is described as live at https://cresolpaintng.com.
+Credits were updated accordingly.
+
+Dependencies: unused tutorial packages `react-router-dom`, `react-tilt` and
+`react-vertical-timeline-component` were removed (clearing the React Router advisories), and
+`npm audit fix` raised the API's `body-parser` to 1.20.9 (high-severity DoS fix). Remaining
+advisories are esbuild/Vite development-server only; fixing them needs a Vite 4 → 8 upgrade.
+
 ## WhatsApp and limited Waffles Runner player (20 October 2026)
 
 User authorized using the resume phone number as WhatsApp: +234 813 516 9229.
