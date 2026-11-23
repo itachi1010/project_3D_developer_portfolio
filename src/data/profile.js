@@ -5,7 +5,7 @@ export const person = {
   email: 'onahben977@gmail.com', location: 'Kano, Nigeria',
   phone: '+234 813 516 9229', whatsapp: 'https://wa.me/2348135169229',
   github: 'https://github.com/itachi1010',
-  linkedin: 'https://www.linkedin.com/in/chuks-onah-benedict-660002192/',
+  linkedin: 'https://www.linkedin.com/in/benedict-chuks-onah-660002192/',
   resume: '/Benedict-Onah-Resume.pdf',
 };
 export const experiences = experience;
